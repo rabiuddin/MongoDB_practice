@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from "axios";
 
 export default function CollectionPage() {
   const [mode, setMode] = useState("renameCollection"); // or 'drop' or 'listCollections'
@@ -19,18 +20,13 @@ export default function CollectionPage() {
           ? { collectionName: oldName }
           : {};
 
-      const res = await fetch(`/api/${mode}`, {
-        method: "POST",
+      const res = await axios.post(`http://localhost:8000/api/${mode}`, body, {
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
       });
 
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message || "Error processing request");
-
-      setResponse(data);
+      setResponse(res.data);
     } catch (err) {
-      setError(err.message);
+      setError(err.response?.data?.message || err.message);
     }
   };
 

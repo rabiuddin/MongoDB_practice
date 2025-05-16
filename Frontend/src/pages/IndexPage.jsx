@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from "axios";
 
 export default function IndexPage() {
   const [mode, setMode] = useState("createIndex"); // or 'dropIndex' or 'getIndexes'
@@ -23,18 +24,13 @@ export default function IndexPage() {
           ? { indexName }
           : {};
 
-      const res = await fetch(`/api/${mode}`, {
-        method: "POST",
+      const res = await axios.post(`http://localhost:8000/api/${mode}`, body, {
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
       });
 
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message || "Error processing request");
-
-      setResponse(data);
+      setResponse(res.data);
     } catch (err) {
-      setError(err.message);
+      setError(err.response?.data?.message || err.message);
     }
   };
 

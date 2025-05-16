@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from "axios";
 
 export default function DeletePage() {
   const [mode, setMode] = useState("deleteOne"); // or 'deleteMany'
@@ -15,18 +16,13 @@ export default function DeletePage() {
         filter: JSON.parse(filter),
       };
 
-      const res = await fetch(`/api/${mode}`, {
-        method: "POST",
+      const res = await axios.post(`http://localhost:8000/api/${mode}`, body, {
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
       });
 
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message || "Error deleting data");
-
-      setResponse(data);
+      setResponse(res.data);
     } catch (err) {
-      setError(err.message);
+      setError(err.response?.data?.message || err.message);
     }
   };
 

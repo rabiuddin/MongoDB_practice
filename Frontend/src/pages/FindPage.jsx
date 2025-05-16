@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from "axios";
 
 export default function FindPage() {
   const [mode, setMode] = useState("find"); // or 'findOne'
@@ -24,18 +25,13 @@ export default function FindPage() {
         if (sort) body.sort = JSON.parse(sort);
       }
 
-      const res = await fetch(`/api/${mode}`, {
-        method: "POST",
+      const res = await axios.post(`http://localhost:8000/api/${mode}`, body, {
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
       });
 
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message || "Error fetching data");
-
-      setResponse(data);
+      setResponse(res.data);
     } catch (err) {
-      setError(err.message);
+      setError(err.response?.data?.message || err.message);
     }
   };
 

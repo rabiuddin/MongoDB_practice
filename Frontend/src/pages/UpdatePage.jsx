@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from "axios";
 
 export default function UpdatePage() {
   const [mode, setMode] = useState("updateOne"); // or 'updateMany' or 'replaceOne'
@@ -19,18 +20,13 @@ export default function UpdatePage() {
           : { update: JSON.parse(update) }),
       };
 
-      const res = await fetch(`/api/${mode}`, {
-        method: "POST",
+      const res = await axios.post(`http://localhost:8000/api/${mode}`, body, {
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
       });
 
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message || "Error updating data");
-
-      setResponse(data);
+      setResponse(res.data);
     } catch (err) {
-      setError(err.message);
+      setError(err.response?.data?.message || err.message);
     }
   };
 

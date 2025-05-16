@@ -1,26 +1,43 @@
 import express from "express";
+import {
+  insertOne,
+  insertMany,
+  findMany,
+  findOne,
+  updateOne,
+  updateMany,
+  replaceOne,
+  deleteOne,
+  deleteMany,
+  createIndex,
+  deleteIndex,
+  getIndexes,
+  renameCollection,
+  dropCollection,
+  getCollections,
+} from "./user.controller.js";
 
 const router = express.Router();
 
 router.post("/insertOne", insertOne);
-router.post("insertMany", insertMany);
+router.post("/insertMany", insertMany);
 
 router.post("/find", findMany);
 router.post("/findOne", findOne);
 
-router.patch("/updateOne", updateOne);
-router.patch("/updateMany", updateMany);
-router.put("/replaceOne", replaceOne);
+router.post("/updateOne", updateOne);
+router.post("/updateMany", updateMany);
+router.post("/replaceOne", replaceOne);
 
-router.delete("/deleteOne", deleteOne);
-router.delete("/deleteMany", deleteaMany);
+router.post("/deleteOne", deleteOne);
+router.post("/deleteMany", deleteMany);
 
 router.post("/createIndex", createIndex);
-router.delete("/deleteIndex", deleteIndex);
-router.get("/getIndexes", getIndexes);
+router.post("/deleteIndex", deleteIndex);
+router.post("/getIndexes", getIndexes);
 
 router.post("/renameCollection", renameCollection);
-router.delete("dropCollection", dropCollection);
-router.get("/getCollections", getCollections);
+router.post("/dropCollection", dropCollection);
+router.post("/listCollections", getCollections);
 
 export default router;
